@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public enum SceneState
@@ -14,9 +15,9 @@ public enum SceneState
     ulos
 }
 
-public class Lightmanager : MonoBehaviour
+public class Scenemanager : MonoBehaviour
 {
-    static public Lightmanager Instance;
+    static public Scenemanager Instance;
     public SceneState sceneState;
 
     public float lightIntensityAlku;
@@ -27,6 +28,7 @@ public class Lightmanager : MonoBehaviour
     public Color colorUlos;
     public List<Light> dynamicLights;
     public List<GameObject> oviLaudat;
+    public GameObject avainkuva;
     public GameObject avain;
 
     private void Awake()
@@ -36,12 +38,33 @@ public class Lightmanager : MonoBehaviour
 
     void Start()
     {
-        ChangeState(sceneState);
+        ChangeState(sceneState); //alku, talossa, ulos yms
+        aktiivinenScene = SceneManager.GetActiveScene().name;
+        muutaScene = aktiivinenScene;
     }
+
+    string aktiivinenScene;
+    string muutaScene;
 
     private void Update()
     {
-       
+       if (muutaScene != aktiivinenScene)
+        {
+            if (SceneManager.GetActiveScene().name == muutaScene) //EI TOIMI, skene latautuu mutta ei vaihdu eik‰ tee mit‰‰n t‰st‰ eteenp‰in
+            {
+                Debug.Log("skene on latautunut");
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(muutaScene));
+                aktiivinenScene = muutaScene;
+                //muutaScene = aktiivinenScene;
+            }
+        }
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        Debug.Log("nappi painettu");
+        SceneManager.LoadScene(sceneName,LoadSceneMode.Additive);
+        muutaScene = sceneName;
     }
 
     public void ChangeState(SceneState setState)
@@ -89,11 +112,12 @@ public class Lightmanager : MonoBehaviour
 
         if (sceneState == SceneState.avain)
         {
-            avain.SetActive(true);
+            avainkuva.SetActive(true);
+            avain.SetActive(false);
         }
         else
         {
-            avain.SetActive(false);
+            avainkuva.SetActive(false);
         }
     }
 }

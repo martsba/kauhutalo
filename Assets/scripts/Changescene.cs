@@ -9,9 +9,9 @@ public class Changescene : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Lightmanager.Instance.sceneState == changeStateFrom)
+        if (Scenemanager.Instance.sceneState == changeStateFrom)
         {
-            Lightmanager.Instance.ChangeState(changeStateTo);
+            Scenemanager.Instance.ChangeState(changeStateTo);
         }
     }
 }
