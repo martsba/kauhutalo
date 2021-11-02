@@ -35,36 +35,84 @@ public class Scenemanager : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnEnable()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
         ChangeState(sceneState); //alku, talossa, ulos yms
-        aktiivinenScene = SceneManager.GetActiveScene().name;
-        muutaScene = aktiivinenScene;
+        Debug.Log("start");
     }
 
-    string aktiivinenScene;
-    string muutaScene;
+    static string aktiivinenScene = "kauhutalo";
+    static string muutaScene = "kauhutalo";
 
     private void Update()
     {
        if (muutaScene != aktiivinenScene)
         {
-            if (SceneManager.GetActiveScene().name == muutaScene) //EI TOIMI, skene latautuu mutta ei vaihdu eik‰ tee mit‰‰n t‰st‰ eteenp‰in
+            Debug.Log("MuutaSecene: "+ muutaScene + " / AktiivinenScene: "+ aktiivinenScene);
+            Debug.Log("Is scene '" + SceneManager.GetSceneByName(muutaScene).name + " loaded: "+ SceneManager.GetSceneByName(muutaScene).isLoaded);
+
+            if (SceneManager.GetSceneByName(muutaScene).isLoaded)
             {
                 Debug.Log("skene on latautunut");
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(muutaScene));
                 aktiivinenScene = muutaScene;
-                //muutaScene = aktiivinenScene;
+                ShowSceneObjects();
+                this.gameObject.SetActive(false);
             }
         }
     }
 
     public void LoadScene(string sceneName)
     {
-        Debug.Log("nappi painettu");
-        SceneManager.LoadScene(sceneName,LoadSceneMode.Additive);
+        Debug.Log("nappi painettu, scene '"+sceneName+"' isLoaded: "+ SceneManager.GetSceneByName(sceneName).isLoaded);
+        if(SceneManager.GetSceneByName(sceneName).isLoaded == false)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        }
         muutaScene = sceneName;
+        HideSceneObjects();
+
+        // kursorin n‰kyminen skeneiss‰
+        bool loadingFirstPersonScene = false;
+        if (sceneName == "kauhutalo")
+        {
+            loadingFirstPersonScene = true;
+        }
+        if (loadingFirstPersonScene == true)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        Cursor.visible = !loadingFirstPersonScene;
+    }
+
+    public void HideSceneObjects()
+    {
+        Debug.Log("Hiding objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
+        foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            if (go.GetComponent<Scenemanager>() == null)
+            {
+                go.SetActive(false);
+            }
+        }
+    }
+
+    public void ShowSceneObjects()
+    {
+        Debug.Log("Showing objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
+        foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            go.SetActive(true);
+        }
     }
 
     public void ChangeState(SceneState setState)
