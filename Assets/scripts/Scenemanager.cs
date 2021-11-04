@@ -28,6 +28,7 @@ public class Scenemanager : MonoBehaviour
     public Color colorUlos;
     public List<Light> dynamicLights;
     public List<GameObject> oviLaudat;
+    public List<GameObject> oviLaudat2;
     public GameObject avainkuva;
     public GameObject avain;
 
@@ -43,7 +44,6 @@ public class Scenemanager : MonoBehaviour
     void Start()
     {
         ChangeState(sceneState); //alku, talossa, ulos yms
-        Debug.Log("start");
     }
 
     static string aktiivinenScene = "kauhutalo";
@@ -53,23 +53,31 @@ public class Scenemanager : MonoBehaviour
     {
        if (muutaScene != aktiivinenScene)
         {
-            Debug.Log("MuutaSecene: "+ muutaScene + " / AktiivinenScene: "+ aktiivinenScene);
-            Debug.Log("Is scene '" + SceneManager.GetSceneByName(muutaScene).name + " loaded: "+ SceneManager.GetSceneByName(muutaScene).isLoaded);
+            //Debug.Log("MuutaSecene: "+ muutaScene + " / AktiivinenScene: "+ aktiivinenScene);
+            //Debug.Log("Is scene '" + SceneManager.GetSceneByName(muutaScene).name + " loaded: "+ SceneManager.GetSceneByName(muutaScene).isLoaded);
 
             if (SceneManager.GetSceneByName(muutaScene).isLoaded)
             {
-                Debug.Log("skene on latautunut");
+                //Debug.Log("skene on latautunut");
                 SceneManager.SetActiveScene(SceneManager.GetSceneByName(muutaScene));
                 aktiivinenScene = muutaScene;
                 ShowSceneObjects();
                 this.gameObject.SetActive(false);
             }
-        }
+        } 
+        
+        foreach (GameObject lauta2 in oviLaudat2)
+            {
+                if (MovePicture.kuutiotpaikoillaan == true)
+                {
+                    lauta2.SetActive(false);
+                }
+            }
     }
 
     public void LoadScene(string sceneName)
     {
-        Debug.Log("nappi painettu, scene '"+sceneName+"' isLoaded: "+ SceneManager.GetSceneByName(sceneName).isLoaded);
+        //Debug.Log("nappi painettu, scene '"+sceneName+"' isLoaded: "+ SceneManager.GetSceneByName(sceneName).isLoaded);
         if(SceneManager.GetSceneByName(sceneName).isLoaded == false)
         {
             SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
@@ -96,7 +104,7 @@ public class Scenemanager : MonoBehaviour
 
     public void HideSceneObjects()
     {
-        Debug.Log("Hiding objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
+        //Debug.Log("Hiding objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
         foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())
         {
             if (go.GetComponent<Scenemanager>() == null)
@@ -108,7 +116,7 @@ public class Scenemanager : MonoBehaviour
 
     public void ShowSceneObjects()
     {
-        Debug.Log("Showing objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
+        //Debug.Log("Showing objects in '" + SceneManager.GetActiveScene().name + "' (" + SceneManager.GetActiveScene().GetRootGameObjects().Length + ")");
         foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())
         {
             go.SetActive(true);
