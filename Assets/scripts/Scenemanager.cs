@@ -127,6 +127,7 @@ public class Scenemanager : MonoBehaviour
     {
         sceneState = setState;
 
+
         foreach (Light valo in dynamicLights)
         {
             if (sceneState == SceneState.talossa)
