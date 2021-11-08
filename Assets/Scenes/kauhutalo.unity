@@ -1987,6 +1987,7 @@ GameObject:
   - component: {fileID: 886186946}
   - component: {fileID: 886186945}
   - component: {fileID: 886186949}
+  - component: {fileID: 886186950}
   m_Layer: 0
   m_Name: palapelinappi
   m_TagString: Untagged
@@ -2084,6 +2085,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LoadSceneName: SampleScene
+--- !u!114 &886186950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886186944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 105e1ad9649fa0f42b477791899c9fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &891775283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 977e7278d3486f1489724a6d226b9ca0, type: 3}
